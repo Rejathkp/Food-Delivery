@@ -167,12 +167,6 @@
 
 // export default PlaceOrder
 
-
-
-
-
-
-
 // import React, { useContext, useState } from "react";
 // import "./PlaceOrder.css";
 // import { StoreContext } from "../../context/StoreContext";
@@ -392,26 +386,6 @@
 
 // export default PlaceOrder;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import React, { useContext, useEffect, useState } from "react";
 import "./PlaceOrder.css";
 import { StoreContext } from "../../context/StoreContext";
@@ -449,6 +423,8 @@ const PlaceOrder = () => {
 
   // Place order function
   const placeOrder = async (event) => {
+    console.log("hello");
+
     event.preventDefault();
 
     const orderItems = food_list
@@ -471,10 +447,10 @@ const PlaceOrder = () => {
       });
 
       if (response.data.success) {
-        // alert("Order placed successfully using Cash on Delivery!");
-        // window.location.href = "/myorders";
-        const {session_url} = response.data
-        windows.location.replace(session_url)
+        alert("Order placed successfully using Cash on Delivery!");
+        window.location.href = "/myorders";
+        // const { session_url } = response.data;
+        // windows.location.replace(session_url);
       } else {
         alert("Error placing order");
       }
@@ -486,16 +462,15 @@ const PlaceOrder = () => {
     }
   };
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  useEffect(()=>{
-    if(!token) {
-      navigate('/cart')
+  useEffect(() => {
+    if (!token) {
+      navigate("/cart");
+    } else if (getTotalCartAmount() == 0) {
+      navigate("/cart");
     }
-    else if(getTotalCartAmount()==0) {
-      navigate('/cart')
-    }
-  },[token])
+  }, [token]);
 
   return (
     <form onSubmit={placeOrder} className="place-order">
@@ -582,43 +557,44 @@ const PlaceOrder = () => {
       </div>
 
       <div className="place-order-right">
-  <div className="cart-totals">
-    <h2>Cart Totals</h2>
-    <div className="cart-totals-details">
-      <p>Subtotal</p>
-      <p>₹{getTotalCartAmount()}</p>
-    </div>
-    <hr />
-    <div className="cart-totals-details">
-      <p>Delivery Fee</p>
-      <p>₹{getTotalCartAmount() === 0 ? 0 : 40}</p>
-    </div>
-    <hr />
-    <div className="cart-totals-details">
-      <b>Total</b>
-      <b>₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 40}</b>
-    </div>
-    
-    {/* Payment Method Section */}
-    <h3 className="cart-totals" style={{ marginTop: "30px" }}>Payment Method</h3>
-    <div className="payment-methods">
-      <label>
-        <input
-          type="radio"
-          name="paymentMethod"
-          value="COD"
-          checked={paymentMethod === "COD"}
-          onChange={onPaymentMethodChange}
-        />
-        Cash on Delivery
-      </label>
-    </div>
+        <div className="cart-totals">
+          <h2>Cart Totals</h2>
+          <div className="cart-totals-details">
+            <p>Subtotal</p>
+            <p>₹{getTotalCartAmount()}</p>
+          </div>
+          <hr />
+          <div className="cart-totals-details">
+            <p>Delivery Fee</p>
+            <p>₹{getTotalCartAmount() === 0 ? 0 : 40}</p>
+          </div>
+          <hr />
+          <div className="cart-totals-details">
+            <b>Total</b>
+            <b>₹{getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 40}</b>
+          </div>
 
-    {/* Place Order Button */}
-    <button type="submit" >PLACE ORDER</button>
-  </div>
-</div>
+          {/* Payment Method Section */}
+          <h3 className="cart-totals" style={{ marginTop: "30px" }}>
+            Payment Method
+          </h3>
+          <div className="payment-methods">
+            <label>
+              <input
+                type="radio"
+                name="paymentMethod"
+                value="COD"
+                checked={paymentMethod === "COD"}
+                onChange={onPaymentMethodChange}
+              />
+              Cash on Delivery
+            </label>
+          </div>
 
+          {/* Place Order Button */}
+          <button type="submit">PLACE ORDER</button>
+        </div>
+      </div>
     </form>
   );
 };
