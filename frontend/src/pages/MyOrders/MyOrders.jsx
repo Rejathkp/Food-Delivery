@@ -10,9 +10,23 @@ const MyOrders = () => {
     const [data,setData] = useState([])
 
     const fetchOrders = async () => {
-        const response = await axios.post(url+"/api/order/userorders",{},{headers:{token}})
-        setData(response.data.data)
-    }
+  try {
+    const response = await axios.post(
+      url + "/api/order/userorders",
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Orders response:", response.data);
+    setData(response.data.data);
+  } catch (err) {
+    console.error("❌ Fetch orders failed:", err.response?.data || err.message);
+  }
+};
+
 
     useEffect(()=>{
         if (token) {

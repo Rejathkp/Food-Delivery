@@ -1,19 +1,26 @@
-import jwt from "jsonwebtoken"
+import jwt from "jsonwebtoken";
 
-const authMiddleware = async (req,res,next) => {
-    const {token} = req.headers;
-    if(!token) {
-        return res.json({success:false,message:"Not Authorized Login Again"})
+const authMiddleware = async (req, res, next) => {
+  try {
+    // Get token from "Authorization: Bearer <token>"
+    const authHeader = req.headers["authorization"];
+    if (!authHeader) {
+      return res.status(401).json({ success: false, message: "No token provided" });
     }
-    try{
-        const token_decode = jwt.verify(token,process.env.JWT_SECRET);
-        req.body.userId = token_decode.id;
-        next();
+
+    const token = authHeader.split(" ")[1]; // Remove "Bearer"
+    if (!token) {
+      return res.status(401).json({ success: false, message: "Invalid token format" });
     }
-    catch (error){
-        console.log(error);
-        res.json({success:false,message:"Error"})
-    }
-}
+
+    // Verify token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.id; // attach userId safely
+    next();
+  } catch (error) {
+    console.error("JWT Error:", error.message);
+    res.status(401).json({ success: false, message: "Unauthorized" });
+  }
+};
 
 export default authMiddleware;
