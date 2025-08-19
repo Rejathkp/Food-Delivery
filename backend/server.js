@@ -16,7 +16,7 @@ app.use(express.json());
 
 const allowedOrigins = [
   "http://localhost:3000",                      // local frontend
-  "https://food-delivery-546h.onrender.com"     // deployed frontend
+  "https://food-delivery-546h.onrender.com",     // deployed frontend
   "https://food-delivery-admin-3nuv.onrender.com"    //deployed admin 
 ];
 
