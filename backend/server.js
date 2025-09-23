@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
-if(process.env.NODE_URL !== "production") {
+if(process.env.NODE_ENV !== "production") {
   app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
