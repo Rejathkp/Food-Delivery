@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import http from "http"
 import { connectDB } from "./config/db.js";
 import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
@@ -9,6 +10,7 @@ import orderRouter from "./routes/orderRoute.js";
 
 // app config
 const app = express();
+const server = http.createServer(app)
 const port = process.env.PORT || 4000;
 
 // middleware
@@ -30,6 +32,7 @@ app.use(cors({
 connectDB();
 
 // api endpoints
+app.use("/api/status",(req,res)=> res.send("Server is live"))
 app.use("/api/food", foodRouter);
 app.use("/images", express.static('uploads'));
 app.use("/api/user", userRouter);
@@ -41,7 +44,7 @@ app.get("/", (req, res) => {
 });
 
 if(process.env.NODE_ENV !== "production") {
-  app.listen(port, () => {
+  server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
 }
