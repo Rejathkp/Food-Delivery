@@ -11,7 +11,7 @@ import orderRouter from "./routes/orderRoute.js";
 // app config
 const app = express();
 const server = http.createServer(app)
-const port = process.env.PORT || 4000;
+
 
 // middleware
 app.use(express.json());
@@ -44,6 +44,7 @@ app.get("/", (req, res) => {
 });
 
 if(process.env.NODE_ENV !== "production") {
+  const port = process.env.PORT || 4000;
   server.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
