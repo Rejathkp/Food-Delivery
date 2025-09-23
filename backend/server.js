@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import http from "http"
 import { connectDB } from "./config/db.js";
 import foodRouter from "./routes/foodRoute.js";
 import userRouter from "./routes/userRoute.js";
@@ -10,8 +9,7 @@ import orderRouter from "./routes/orderRoute.js";
 
 // app config
 const app = express();
-const server = http.createServer(app)
-
+const port = process.env.PORT || 4000;
 
 // middleware
 app.use(express.json());
@@ -43,11 +41,7 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
-if(process.env.NODE_ENV !== "production") {
-  const port = process.env.PORT || 4000;
-  server.listen(port, () => {
+  app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
   });
-}
 
-export default server
